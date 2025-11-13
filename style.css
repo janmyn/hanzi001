@@ -756,8 +756,6 @@ body {
         font-size: 0.9em;
         margin-bottom: 6px;
     }
-    /* 移动端练习中心改为单列 */
-    .practice-grid { grid-template-columns: 1fr; }
     
     /* 移动端优化 */
     /* HTML 中任何带有 class="title" 的标题元素。*/
