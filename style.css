@@ -250,14 +250,14 @@ body {
 
 /* 练习中心美化 */
 #practice-hub {
-    margin-top: 300px; /* 标题和练习框之间的间距 */
+    margin-top: 400px; /* practicehub练习框的位置 */
 }
 
 .practice-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
     gap: 25px;
-    margin: -0px; /* 移除负边距，使用正常的间距 */
+    margin: -350px; /* practicehub 中 practice的位置 */
 }
 .practice-card {
     position: relative;
@@ -688,7 +688,7 @@ body {
 @media (max-width: 768px) {
     /* 主页容器样式 - 强制覆盖 */
     #main-page {
-        width: 78%;
+        width: 78% !important;
         max-width: none !important;
         box-sizing: border-box;
         padding: 5px;
