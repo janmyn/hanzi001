@@ -697,8 +697,8 @@ body {
     
     /* 闪卡页面容器样式 - 强制覆盖 */
     #review-page {
-        width: 95% !important;
-        max-width: none !important;
+        width: 95%;
+        max-width: none;
         min-height: 600px;
         padding: 5px;
         margin: 10px;
