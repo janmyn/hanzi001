@@ -707,8 +707,8 @@ body {
     
     /* 练习页面容器样式 */
     #practice-page {
-        width: 95% !important;
-        max-width: none !important;
+        width: 95% ;
+        max-width: none;
         padding: 5px;
         margin: 10px;
     }
