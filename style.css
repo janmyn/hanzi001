@@ -1,0 +1,906 @@
+@font-face {
+    font-family: 'CustomKaiTi';
+    src: url('fonts/KaiTi.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* 优化字体加载体验 */
+}
+
+/* 自定义字体：Roboto */
+@font-face {
+    font-family: 'CustomDidot';
+    src: url('fonts/Didot.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'CustomRoboto', 'Roboto', 'Didot', 'Futura', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #2d2d42;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+/* 汉字使用楷体 - 优先使用自定义字体 */
+.hanzi, #hanzi-display, .question, .option, .phone-display, .pinyin, .meaning {
+    font-family: 'CustomKaiTi', 'KaiTi', '楷体', 'STKaiti', '华文楷体', serif;
+}
+
+.title {
+    font-size: 2.2em;
+    color: #585858ae;
+    /* 首页标题间距 */ 
+    margin-bottom: 40px;
+    font-weight: 700px;
+    text-align: center;
+}
+
+.review-title {
+    font-size: 1.5em;      /* 把它改小一点 */
+    color: #585858ae;     /* 把它改成蓝色 */
+    margin-bottom: 20px; /* 减小下方的间距 */
+    text-align: center;  /* 【关键】让它居中，而不是像主标题一样左对齐 */
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 40px;
+}
+/*首页的的两个板块review和practice*/
+.modules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 30px;
+    /* 首页模块整体上移 10px */
+    margin-top: -10px;
+}
+
+.module {
+    background: linear-gradient(135deg, #d9acd8, #97679a);
+    color: rgba(246, 246, 240, 0.972);
+    padding: 30px 100px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.module:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.module h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.module p {
+    font-size: 1.1em;
+    opacity: 0.7;
+}
+
+.practice-module {
+    background: linear-gradient(135deg, #86c2c2, #69c4ef);
+}
+
+.hidden {
+    display: none; /* 保证完全隐藏 */
+}
+
+
+/* 复习模块样式 */
+/* 就是就是那个白色的、带圆角和阴影的“画框”。*/
+.review-container {
+    text-align: center;
+    background: rgb(255, 253, 253, 1);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0);
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    /* 1. 开启相对定位 */
+    position: relative;
+/* 2. 相对于它的底部，向上推20px */
+    bottom: 20px; /* 首页 Review 卡片上移 10px */
+}
+
+.flashcard {
+    width: 400px;
+    height: 300px;
+    margin: 60px auto;
+    perspective: 1000px;
+    position: relative; /* 便于将首页按钮固定在白色框内 */
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4em;
+    font-weight: bold;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.card-front {
+    background: linear-gradient(120deg, #f7f7ed, #f7f7ed);
+    color: #282d5e;
+}
+
+.card-back {
+    background: linear-gradient(180deg, #f6f7f2, #f5f6f2);
+    color: #282d5e;
+    transform: rotateY(180deg);
+    flex-direction: column;
+
+}
+
+.pinyin {
+    font-size: 0.7em;
+    margin-bottom: 15px;
+}
+
+.meaning {
+    font-size: 0.4em;
+    opacity: 0.9;
+}
+
+.navigation {
+    margin-top: 30px;
+}
+
+.nav-btn {
+    background: #595062;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nav-btn:hover {
+    background: #fcb662;
+    transform: translateY(-2px);
+}
+
+.nav-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 练习模块样式 */
+.practice-container {
+    text-align: center;
+    position: relative; /* 便于放置左上角返回按钮 */
+}
+.practice-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 40px; /* 默认：小屏或无媒体覆盖时并排 */
+}
+/* 重置在标题行内的 Home 按钮为非绝对定位 */
+#practice-page .practice-header .back-home-btn {
+    position: static;
+    margin: 0;
+    
+}
+/* 桌面端：Practice 居中显示；Home 同行且距容器左侧40px */
+@media (min-width: 769px) {
+    #practice-page .practice-container { padding-top: 20px; }
+    #practice-page .practice-header {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr; /* 左空-中标题-右空 */
+        align-items: center;
+    }
+    #practice-page .practice-header .back-home-btn {
+        position: static; /* 非固定 */
+        justify-self: start;
+        margin-left: 40px; /* 距容器左侧40px */
+    }
+    #practice-page .practice-header .title {
+        justify-self: center; /* 居中 */
+        margin: 0;
+    }
+}
+
+.practice-nav {
+    display: none; /* 不再使用 */
+}
+
+.practice-tab {
+    display: none; /* 不再使用 */
+}
+
+.practice-tab.active { display: none; }
+.practice-tab.locked { display: none; }
+
+/* 练习中心美化 */
+#practice-hub {
+    margin-top: 300px; /* 标题和练习框之间的间距 */
+}
+
+.practice-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 25px;
+    margin: -0px; /* 移除负边距，使用正常的间距 */
+}
+.practice-card {
+    position: relative;
+    padding: 20px;
+    border: 2px solid #282d5e;
+    background: #f0e9de;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+.practice-card:hover {
+    transform: translateY(-2px);
+    border-color: #4ecdc4;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.practice-card.locked {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.practice-card.locked::after {
+    content: '🔒';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 18px;
+}
+.practice-card .card-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+.practice-card h4 {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+    color: #2d2d42;
+}
+.practice-card p {
+    font-size: 0.9em;
+    color: #2d2d42;
+}
+
+.back-home-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 8px 14px;
+    border-radius: 18px;
+    border: none;
+    background: #5d7399;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9em;
+    z-index: 10; /* 确保按钮在最上层 */
+    font-family: 'Roboto', sans-serif;
+}
+/* 练习页：桌面端默认距左 40px */
+#practice-page .back-home-btn { left: 40px; }
+
+.back-home-btn:hover { background: #5a6fd8; }
+
+.practice-content {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 打字练习输入框样式 */
+.typing-input {
+    width: 260px;
+    padding: 14px 16px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    font-size: 1.2em;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s ease;
+    font-family: 'CustomKaiTi', 'KaiTi', '楷体', 'STKaiti', '华文楷体', serif;
+}
+.typing-input:focus { border-color: #4ecdc4; box-shadow: 0 0 0 4px rgba(78,205,196,0.15); }
+.typing-input.correct { border-color: #feffe4; background: #f0fff2; }
+.typing-input.incorrect { border-color: #f44336; background: #fff5f4; }
+
+.question {
+    font-size: 4em;
+    margin: 30px 0 60px 0;
+    color: #fffcfc;
+    font-weight: bold;
+}
+
+/* 确保当题目文本有 hidden 类时，优先隐藏 */
+#question-text.hidden,
+.question.hidden {
+    display: none;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* 确保当选项框有 hidden 类时，优先隐藏（覆盖 display: grid） */
+#options-box.hidden,
+.options.hidden {
+    display: none;
+}
+
+.option {
+    background: white;
+    border: 2px solid #ddd;
+    padding: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.option:hover {
+    border-color: #4ecdc4;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.option.correct {
+    background: #279265;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.option.incorrect {
+    background: #312625;
+    color: white;
+    border-color: #81312b;
+}
+
+.option.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ecdc4, #44a08d);
+    transition: width 0.3s ease;
+}
+
+.score-display {
+    font-size: 1.2em;
+    margin: 20px 0;
+    color: #666;
+}
+
+.next-btn {
+    background: #595062;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 80px;
+    transition: all 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* 练习3：Submit/Next 间距优化 */
+.practice-content.practice-3 #typing-submit { margin-top: 20px; }
+.practice-content.practice-3 #next-practice-btn { margin-top: 20px; }
+
+.next-btn:hover {
+    background: #fcb662;
+    transform: translateY(-2px);
+}
+
+.next-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.summary-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.summary-title {
+    font-size: 2.5em;
+    color: #00B4D8;
+    margin-bottom: 30px;
+}
+
+#summary-text {
+    color: #f5f5dc;
+    font-size: 1em;
+    margin-bottom: 30px;
+    white-space: pre-line;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(#e6cb1b 0deg, #edd711 var(--score-angle), #eee var(--score-angle));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto;
+    position: relative;
+}
+
+.score-circle::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: white;
+    border-radius: 50%;
+}
+
+.score-text {
+    position: relative;
+    z-index: 1;
+    font-size: 2em;
+    font-weight: bold;
+    color: #242420;
+}
+
+.back-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.back-btn:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+/* 分数页按钮行布局 */
+.summary-actions {
+    display: flex;
+    justify-content: center;
+    /* score 和 details 中间的间距 */
+    gap: 17px;
+    margin-top: 10px;
+}
+
+/* 详情页面 */
+.detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 0px;
+    padding: 5px;
+}
+.detail-title {
+    font-size: 2.2em;
+    color: #2d2d42;
+    margin-bottom: 16px;
+    text-align: center;
+    font-family: 'Roboto', 'Didot', 'Futura', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.detail-section-title {
+    margin-top: 18px;
+    margin-bottom: 15px;
+    color: #2d2d42;
+    font-weight: bold;
+    font-family: 'Roboto', 'Didot', 'Futura', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+/* 详情页：每个练习表格块之间增加间距 */
+#detail-page .detail-section {
+    margin-bottom: 40px;
+}
+#detail-page .detail-section:last-child {
+    margin-bottom: 0;
+}
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fafafa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+/* 详情页表格中文字体使用楷体，英文/数字用 .latin 指定 */
+#detail-page .detail-table,
+#detail-page .detail-table td {
+    font-family: 'CustomKaiTi', 'KaiTi', '楷体', 'STKaiti', '华文楷体', serif;
+}
+/* 表头为英文，采用 Roboto */
+#detail-page .detail-table th { font-family: 'CustomRoboto', 'Roboto', 'Helvetica Neue', Arial, sans-serif; }
+/* 英文与数字专用字体 */
+#detail-page .latin { font-family: 'CustomRoboto', 'Roboto', 'Helvetica Neue', Arial, sans-serif; }
+.detail-table th, .detail-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center; /* Web版全部居中 */
+    color: #2d2d42;
+}
+/* 表格颜色 */ 
+.detail-table th {
+    background:#595062;
+    color: #ffffff;
+}
+/* 错误答案标红（提高选择器优先级，覆盖单元格默认颜色） */
+.detail-table td.tag-correct { color: #2e7d32; }
+.detail-table td.tag-wrong { color: #c62828; }
+
+/* 手机号练习特殊样式 */
+.phone-display {
+    font-size: 2.5em;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    margin: 20px 0;
+    color: #333;
+}
+
+/* 音频播放按钮 */
+.audio-btn {
+
+/* 1. 使用绝对定位 */
+    position: absolute; /* 让按钮可以相对于父容器自由移动 */
+    top:100%;
+    left:50%;
+    bottom: 80px;       /* 距离底部 15px */
+    right: 50%;        /* 距离右边 15px */
+
+/* 2. 变成一个圆形小按钮 */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 50% = 正圆形 */
+    padding: 0;         /* 移除内边距 */
+/* 3. 美化 */
+    background:transparent;
+    color: rgb(241, 231, 231,);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 0%;
+    cursor: pointer;
+    font-size: 0.3em;
+    transition: all 0.3s ease;
+    font-family: 'Roboto', sans-serif; 
+/* 4. (新增) 确保图标完美居中 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.audio-btn:hover {
+    background:transparent;
+    transform: translateY(-2px);
+}
+
+/* 复习闪卡内的音频按钮放在拼音与英文下面，改为常规按钮布局 */
+.card-face .audio-btn {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    height: auto;
+    border-radius: 25px;
+    padding: 8px 16px;
+    margin-top: 10px;
+    background: transparent;
+    color: rgb(203, 172, 172);
+}
+
+/* 练习4音频按钮 - 基础样式，默认隐藏 */
+#audio-question-btn {
+    position: static;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    right: auto;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 2em;
+    margin: 20px auto;
+    color: rgb(203, 172, 172);
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    line-height: 1;
+    padding: 0;
+    display: none; /* 默认隐藏 */
+}
+
+/* 只在练习4且没有 hidden 类时显示 */
+#question-page.practice-4:not(.hidden) #audio-question-btn:not(.hidden) {
+    display: block;
+}
+
+/* 确保当音频按钮有 hidden 类时，始终隐藏 */
+#audio-question-btn.hidden,
+#question-page.hidden #audio-question-btn {
+    display: none;
+}
+
+/* 确保音频按钮只在练习4显示，其他练习隐藏（使用高特异性选择器） */
+#question-page.practice-content:not(.practice-4) #audio-question-btn,
+.practice-content:not(.practice-4) #audio-question-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    /* 主页容器样式 - 强制覆盖 */
+    #main-page {
+        width: 78%;
+        max-width: none !important;
+        box-sizing: border-box;
+        padding: 5px;
+        margin: 10px;
+    }
+    
+    /* 闪卡页面容器样式 - 强制覆盖 */
+    #review-page {
+        width: 95% !important;
+        max-width: none !important;
+        min-height: 600px;
+        padding: 5px;
+        margin: 10px;
+        padding-top: 40px;
+    }
+    
+    /* 练习页面容器样式 */
+    #practice-page {
+        width: 95% !important;
+        max-width: none !important;
+        padding: 5px;
+        margin: 10px;
+    }
+    .modules, .practice-grid, .options {
+        grid-template-columns: 1fr; /* 关键：所有网格布局都变成单列 */
+    }
+    /*练习1四个答案选项*/ 
+    .options {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: -5px;
+    }
+    /* h2 标题位置*/ 
+    .question {
+        font-size: 4em;
+        margin-top: -40px;
+    }
+    
+    .flashcard {
+        width: 95%;
+        height: 350px;
+        margin: 10px auto;
+    }
+    .review-container {
+        padding: 15px;
+        bottom: 10px;
+        position: relative;
+    }
+    
+    .card-face {
+        font-size: 0.8em;
+        padding: 15px;
+    }
+    
+    .card-face h2 {
+        font-size: 2em;
+        margin-bottom: 8px;
+    }
+    
+    .card-face .pinyin {
+        font-size: 1em;
+        margin-bottom: 6px;
+    }
+    
+    .card-face .meaning {
+        font-size: 0.9em;
+        margin-bottom: 6px;
+    }
+    /* 移动端练习中心改为单列 */
+    .practice-grid { grid-template-columns: 1fr; }
+    
+    /* 移动端优化 */
+    /* HTML 中任何带有 class="title" 的标题元素。*/
+    .title {
+        font-size: 2.0em;
+        margin-bottom: 30px;
+    }
+    .summary-title { font-size: 2.0em; }
+    .detail-title { font-size: 1.8em; }
+    /*HTML 中任何带有 class="subtitle" 的元素*/
+    .subtitle {
+        font-size: 1em;
+        margin-bottom: 5px;
+    }
+    
+    .module {
+        padding: 60px 20px; 
+        /*adding: 60px 20px;: 设置按钮的内边距。按钮内部文字的上方和下方，各增加 60px 的空白空间。在文字的左方和右方，各增加 20px 的空白空间。*/
+        margin-bottom: 5px;
+        /*设置按钮的下外边距*/
+        min-height: 100px;
+    }
+    /*两个模块之间的距离*/
+    .module:nth-child(2) {
+        margin-top: -35px;
+    }
+    
+    .module h3 {
+        font-size: 2.2em;
+    }
+    
+    .module p {
+        font-size: 1.1em;
+    }
+    
+    .practice-card {
+        padding: 25px;
+        margin-bottom: 5px;
+        min-height: 100px;
+    }
+    
+    .practice-card h4 {
+        font-size: 1.2em;
+    }
+    
+    .practice-card p {
+        font-size: 1em;
+    }
+    
+    .back-home-btn {
+        top: 3px;
+        left: 5px;
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+    /* 移动端：保持现有布局，Home 单独左上角 */
+    #practice-page .practice-header { display: block; }
+    #practice-page .practice-header .back-home-btn { position: absolute; left: 20px; top: 10px; }
+    #practice-page .practice-header .title { display: block; }
+    
+    .nav-btn {
+        padding: 6px 12px;
+        font-size: 0.8em;
+        margin: 0 5px;
+    }
+    
+    .audio-btn {
+        padding: 8px 16px;
+        font-size: 0.8em;
+        margin: -10px 0 10px 0;
+        width:50px;
+        height:20px;
+
+    }
+    /*练习4 音频图标*边距*/
+    #audio-question-btn {
+        margin-top: 5px;
+        margin-bottom: 40px;
+    }
+    /*手机端next按钮*/
+    .next-btn {
+        padding: 12px 24px;
+        font-size: 1em;
+        margin-top: 35px;
+    }
+    
+    .typing-input {
+        width: 200px;
+        padding: 12px 14px;
+        font-size: 1.1em;
+    }
+    .card-face {
+        font-size: 3em;
+    }
+    
+    .pinyin {
+        font-size: 0.35em;
+    }
+    
+    .meaning {
+        font-size: 0.25em;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .score-circle::before {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .score-text {
+        font-size: 1.5em;
+    }
+    
+    /* 移动端：详情页容器占满整个屏幕，不留背景 */
+    body:has(#detail-page:not(.hidden)) {
+        padding: 0;
+        margin: 0;
+        display: block;
+        align-items: stretch;
+    }
+    #detail-page {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow-y: auto;
+        background: #ffffff;
+    }
+    #detail-page .detail-container {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 0;
+        border-radius: 0;
+    }
+    #detail-page .detail-table {
+        width: 100%;
+    }
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01</title>
+    <link rel="stylesheet" href="//at.alicdn.com/t/c/font_5046375_njawe1hwe8.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 主页面 -->
+    <div id="main-page" class="main-container">
+        <h1 class="title">01 NUMBERS</h1>            
+        <div class="modules">
+            <!--我加上了review-module  -->
+            <a href="#" class="module review-module" onclick="showReview()">
+                <h3>Review </h3>
+                <p>Flashcards<br>Click to flip for details</p>
+            </a>
+             <a href="#" class="module practice-module" onclick="showPractice()">
+                <h3>Practice</h3>
+                <p>Four Exercises <br>Unlock them step-by-step</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- 复习模块 -->
+    <div id="review-page" class="hidden">
+        <div class="review-page-container">
+            <div class="review-container">
+            <button class="back-home-btn" onclick="showMain()">Home</button>
+            <h2 class="title review-title">Review</h2>
+            <div class="flashcard">
+                <div class="card" id="flashcard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <span id="hanzi-display">一</span>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="pinyin" id="pinyin-display">yī</div>
+                        <div class="meaning" id="meaning-display">one</div>
+                        <button class="audio-btn" onclick="playReviewAudio(event)">🔊</button>
+                    </div>
+                </div>
+            </div>
+               
+            <audio id="review-audio" preload="auto"></audio>
+                
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" onclick="prevCard()">Prev</button>
+                <span id="card-counter">1 / 10</span>
+                <button class="nav-btn" id="next-btn" onclick="nextCard()">Next</button>
+            </div>       
+        </div>
+        </div>
+    </div>
+
+    <!-- 练习模块 -->
+    <div id="practice-page" class="hidden">
+        <div class="practice-container">
+            <div class="practice-header">
+                <button class="back-home-btn" id="practice-header-btn" onclick="showMain()">Home</button>
+                <h2 class="title">Practice</h2>
+            </div>
+            <!-- 练习中心：选择要开始的练习 -->
+            <div id="practice-hub">
+                <div class="practice-grid">
+                    <div class="practice-card" id="start-0" onclick="startPractice(0)">
+                        <div class="card-icon">➊</div>
+                        <p>Select the character for the number</p>
+                    </div>
+                    <div class="practice-card locked" id="start-1" onclick="startPractice(1)">
+                        <div class="card-icon">➋</div>
+                        <p>Choose the correct pinyin for the Hanzi</p>
+                    </div>
+                    <div class="practice-card locked" id="start-2" onclick="startPractice(2)">
+                        <div class="card-icon">➌</div>
+                        <p>Type the character for the number</p>
+                    </div>
+                    <div class="practice-card locked" id="start-3" onclick="startPractice(3)">
+                        <div class="card-icon">➍</div>
+                        <p>Listen and select the character you hear</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 单题页面：只显示一道题及四个选项 -->
+            <div id="question-page" class="practice-content hidden">
+                <div class="question" id="question-text"></div>
+                <button class="audio-btn hidden" id="audio-question-btn" onclick="playAudioQuestion()">🔊</button>
+                <input class="typing-input hidden" id="typing-input" placeholder="请在此处输入" />
+                <button class="next-btn hidden" id="typing-submit" onclick="submitTyping()">Submit</button>
+                <div class="options" id="options-box">
+                    <div class="option"></div>
+                    <div class="option"></div>
+                    <div class="option"></div>
+                    <div class="option"></div>
+                </div>
+                <button class="next-btn" id="next-practice-btn" onclick="nextPractice()" disabled>Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 总结页面 -->
+    <div id="summary-page" class="hidden">
+        <div class="summary-container">
+            <h2 class="summary-title">Good Job!</h2>
+            <div class="score-circle" id="score-circle">
+                <div class="score-text" id="final-score">0%</div>
+            </div>
+            <p id="summary-text">Congratulations! You have completed all the exercises></p>
+            <div class="summary-actions">
+                <button class="back-btn" onclick="showSummary()">🏆 Score</button>
+                <button class="back-btn" onclick="showDetail()">📋 Details</button>
+            </div>
+            <button class="back-btn" onclick="showMain()">Home</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- 详情页面 -->
+    <div id="detail-page" class="hidden">
+        <div class="detail-container">
+            <button class="back-home-btn" onclick="showSummaryFromDetail()">Back</button>
+            <h2 class="detail-title">Details</h2>
+            <div id="detail-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script> 
+</body>
+</html>
