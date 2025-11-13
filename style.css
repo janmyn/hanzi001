@@ -688,8 +688,8 @@ body {
 @media (max-width: 768px) {
     /* 主页容器样式 - 强制覆盖 */
     #main-page {
-        width: 78% !important;
-        max-width: none !important;
+        width: 78%;
+        max-width: none;
         box-sizing: border-box;
         padding: 5px;
         margin: 10px;
