@@ -715,6 +715,12 @@ body {
     .modules, .practice-grid, .options {
         grid-template-columns: 1fr; /* 关键：所有网格布局都变成单列 */
     }
+    .practice-grid {
+        margin: 0;
+        width: 100%;
+        gap: 15px;
+        justify-items: stretch;
+    }
     /*练习1四个答案选项*/ 
     .options {
         grid-template-columns: repeat(2, 1fr);
